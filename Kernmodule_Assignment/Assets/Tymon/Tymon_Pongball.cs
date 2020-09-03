@@ -13,7 +13,6 @@ public class Tymon_Pongball
 
     public Tymon_Pongball(Transform pongball, float movementSpeed, Transform[] bars)
     {
-        this.pongball = pongball;
         this.movementSpeed = movementSpeed;
         this.bars = bars;
     }
@@ -35,10 +34,21 @@ public class Tymon_Pongball
         Vector3 pos = Camera.main.WorldToViewportPoint(pongball.position);
         pos.x = Mathf.Clamp01(pos.x);
         pos.y = Mathf.Clamp01(pos.y);
-        pongball.position = Camera.main.ViewportToWorldPoint(pos);
         // Change dir if reached edge
-        if(pos.x == 0) dirX = 1; else if(pos.x == 1) dirX = -1;
+        if(pos.x == 0)
+        {
+            dirX = 1;
+            // Touched left, point for player
+            pos.x = 0.5f;
+        }
+        else if(pos.x == 1)
+        {
+            dirX = -1;
+            // Touched right, point for enemy
+            pos.x = 0.5f;
+        }
         if(pos.y == 0) dirY = 1; else if(pos.y == 1) dirY = -1;
+        pongball.position = Camera.main.ViewportToWorldPoint(pos);
     }
 
     private void Collision()
@@ -54,7 +64,7 @@ public class Tymon_Pongball
                 {
                     // Bounche off
                     if(pongball.position.x < bar.position.x) dirX = -1; else dirX = 1;
-                    if(pongball.position.y < bar.position.y) dirY = 1; else dirY = -1;
+                    if(pongball.position.y < bar.position.y) dirY = -1; else dirY = 1;
                 }
             }
         }
