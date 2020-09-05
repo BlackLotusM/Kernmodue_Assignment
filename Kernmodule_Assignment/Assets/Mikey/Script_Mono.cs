@@ -1,55 +1,63 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using System.Net.WebSockets;
+using System.Runtime.CompilerServices;
+using System.Xml.Schema;
+using UnityEngine;
 
 public class Script_Mono : MonoBehaviour
 {
+    public GameObject prefab;
+    public GameObject ball;
 
+    public int powerupsatatime;
 
-    //TO-DO make list gameobject 
+    PowerUpBase value;
 
-    public GameObject PowerUpBlock;
-    private First_PU PU;
+    //The power up list will contain every powerup that exists, this is needed to send data through with the collision. It will decide what action to do on collision
+    //The second object will store the gameobjects that have been spawned and contain the index of the PowerUp class associated with it
+    public static Dictionary<int, PowerUpBase> PowerUpList = new Dictionary<int, PowerUpBase>();
+    public static Dictionary<GameObject, int> GameObjectList = new Dictionary<GameObject, int>();
 
-    int numEnemies = 4;
-
-    public List<First_PU> PowerList;
 
     private void Start()
     {
-        PU = new First_PU(PowerUpBlock);
-        PowerList = new List<First_PU>();
+        //Instantsait the classes, this will let the classes loop through their constructor and they will add themself to the Dictionary
+        PowerUpBase Power1 = new PowerUp_Slomo();
+        PowerUpBase Power2 = new PowerUp_Speed();
 
-        for (int i = 0; i < numEnemies; i++)
+
+        //For every int in powerupsatatime it will spawn on power up in the scene.
+        for (int i = 0; i < powerupsatatime; i++)
         {
-            PowerList.Add(new First_PU(PU.Powerupblock));
+            //This random int will be between all available powerup indexes
+            int r = UnityEngine.Random.Range(0, PowerUpList.Count);
+            if (PowerUpList.TryGetValue(r, out value))
+            {
+                value.spawn(prefab, r);
+            }
         }
     }
 
     private void Update()
     {
+        //For  the moment this block of code will let you spawn a new powerup with pressing r
         if (Input.GetKeyDown(KeyCode.R))
         {
-            Debug.Log(PowerList);
-            PowerList.Add(new First_PU(PU.Powerupblock));
-            Debug.Log(PowerList.Count);
-
-            if(PowerList.Count > 13)
+            int r = UnityEngine.Random.Range(0, PowerUpList.Count);
+            if (PowerUpList.TryGetValue(r, out value))
             {
-                First_PU p = PowerList[13];
-                p.changeColors();
+                value.spawn(prefab, r);
             }
-        }        
+        }
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        //To List is needed because of errors, to list will make a temp list at the beginning of the foreach loop. This will let me remove deleted objects in the base class
+        foreach (var element in GameObjectList.ToList())
         {
-            PU.spawn("" + PowerList.Count);
-            PowerList.Add(PU);
-
-            for (int i = 0; i < PowerList.Count; i++)
+            if (PowerUpList.TryGetValue(element.Value, out value))
             {
-                First_PU pb = PowerList[i];
+                value.checkCol(ball, element.Key);
             }
         }
     }
