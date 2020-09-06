@@ -4,13 +4,33 @@ using UnityEngine;
 
 public class Tymon_Pongball
 {
+    /// <summary>
+    /// The direction of the ball on the x-axis
+    /// </summary>
     private int dirX = 1;
+    /// <summary>
+    /// The direction of the ball on the y-axis
+    /// </summary>
     private int dirY = 1;
+    /// <summary>
+    /// The movement speed of the ball
+    /// </summary>
     private float movementSpeed;
-
-    private Transform pongball;
+    /// <summary>
+    /// Reference to the pongball transform
+    /// </summary>
+    private Transform pongball = null;
+    /// <summary>
+    /// Reference to the player and enemy transform (I call them bars)
+    /// </summary>
     private Transform[] bars;
 
+    /// <summary>
+    /// Set class values
+    /// </summary>
+    /// <param name="pongball">Reference to the pongball transform</param>
+    /// <param name="movementSpeed">The movement speed of the ball</param>
+    /// <param name="bars">Reference to the enemy and player transforms</param>
     public Tymon_Pongball(Transform pongball, float movementSpeed, Transform[] bars)
     {
         this.movementSpeed = movementSpeed;
@@ -18,7 +38,7 @@ public class Tymon_Pongball
     }
 
     /// <summary>
-    /// Called to update the ball;
+    /// Called by Tymon_Main to update this class
     /// </summary>
     public void Update()
     {
@@ -26,6 +46,9 @@ public class Tymon_Pongball
         Collision();
     }
 
+    /// <summary>
+    /// Move the ball in the right direction
+    /// </summary>
     private void Movement()
     {
         // Move
@@ -48,9 +71,13 @@ public class Tymon_Pongball
             pos.x = 0.5f;
         }
         if(pos.y == 0) dirY = 1; else if(pos.y == 1) dirY = -1;
+        // Set ponball position relative to camea viewport
         pongball.position = Camera.main.ViewportToWorldPoint(pos);
     }
 
+    /// <summary>
+    /// Check for a collision with the ball
+    /// </summary>
     private void Collision()
     {
         foreach(Transform bar in bars)
@@ -62,7 +89,7 @@ public class Tymon_Pongball
                 // Check y
                 if(pongball.position.y <= bar.position.y + bar.localScale.y && pongball.position.y >= bar.position.y - bar.localScale.y)
                 {
-                    // Bounche off
+                    // Bounche off in the right direction
                     if(pongball.position.x < bar.position.x) dirX = -1; else dirX = 1;
                     if(pongball.position.y < bar.position.y) dirY = -1; else dirY = 1;
                 }
