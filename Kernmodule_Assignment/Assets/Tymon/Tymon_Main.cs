@@ -41,7 +41,7 @@ public class Tymon_Main : MonoBehaviour
         // Set the class references/ create the classes
         tymon_pongball = new Tymon_Pongball(pongball, 5f, arr);
         tymon_player = new Tymon_Player(player, 10f, 8f);
-        tymon_enemy = new Tymon_Enemy(enemy, pongball, -7f, 11f);
+        tymon_enemy = new Tymon_Enemy(enemy, pongball, -7f, 9f);
     }
 
     // Update is called once per frame
