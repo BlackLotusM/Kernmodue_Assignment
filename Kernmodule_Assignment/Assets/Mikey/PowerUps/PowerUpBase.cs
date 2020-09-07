@@ -5,8 +5,6 @@ using UnityEngine;
 
 public abstract class PowerUpBase
 {
-    Script_Mono mono = new Script_Mono();
-
     protected string name { get; set; }
     public GameObject Spawn;
 

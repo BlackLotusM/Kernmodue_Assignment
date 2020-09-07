@@ -26,6 +26,7 @@ public class Script_Mono : MonoBehaviour
         //Instantsait the classes, this will let the classes loop through their constructor and they will add themself to the Dictionary
         PowerUpBase Power1 = new PowerUp_Slomo();
         PowerUpBase Power2 = new PowerUp_Speed();
+        PowerUpBase Power3 = new test();
 
 
         //For every int in powerupsatatime it will spawn on power up in the scene.

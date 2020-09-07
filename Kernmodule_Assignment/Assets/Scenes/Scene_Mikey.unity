@@ -316,7 +316,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   prefab: {fileID: 5362202328537329317, guid: a8be8b55439f45a4a8dacf7a388a549e, type: 3}
   ball: {fileID: 935895198}
-  powerupsatatime: 111
+  powerupsatatime: 3
 --- !u!1 &1778860703
 GameObject:
   m_ObjectHideFlags: 0
