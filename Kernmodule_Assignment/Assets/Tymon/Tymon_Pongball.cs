@@ -33,6 +33,7 @@ public class Tymon_Pongball
     /// <param name="bars">Reference to the enemy and player transforms</param>
     public Tymon_Pongball(Transform pongball, float movementSpeed, Transform[] bars)
     {
+        this.pongball = pongball;
         this.movementSpeed = movementSpeed;
         this.bars = bars;
     }
