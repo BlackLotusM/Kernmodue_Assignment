@@ -53,6 +53,15 @@ public class Script_Mono : MonoBehaviour
             }
         }
 
+        if (GameObjectList.Count < 2)
+        {
+            int r = UnityEngine.Random.Range(0, PowerUpList.Count);
+            if (PowerUpList.TryGetValue(r, out value))
+            {
+                value.spawn(prefab, r);
+            }
+        }
+
         //To List is needed because of errors, to list will make a temp list at the beginning of the foreach loop. This will let me remove deleted objects in the base class
         foreach (var element in GameObjectList.ToList())
         {

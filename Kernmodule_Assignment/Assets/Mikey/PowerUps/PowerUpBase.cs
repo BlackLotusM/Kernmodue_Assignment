@@ -19,10 +19,15 @@ public abstract class PowerUpBase
     //And adds the gameobject to the dictionary
     public void spawn(GameObject obj, int type)
     {
-        Spawn = GameObject.Instantiate(obj);
+        Vector3 screenPosition = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(300, Screen.width - 100), Random.Range(0, Screen.height), 10));
+        Spawn = GameObject.Instantiate(obj, screenPosition, Quaternion.identity);
         Spawn.name = name;
         test2(Spawn);
         Script_Mono.GameObjectList.Add(Spawn, type);
+
+        
+        //Instantiate(ball, screenPosition, Quaternion.identity);
+
     }
 
     //rotates the object
