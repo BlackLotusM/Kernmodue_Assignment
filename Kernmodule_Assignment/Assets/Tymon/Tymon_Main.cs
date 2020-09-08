@@ -36,6 +36,9 @@ public class Tymon_Main : MonoBehaviour
     /// </summary>
     public TextMeshProUGUI uiScore;
 
+    public ParticleSystem scoredLeftParticle;
+    public ParticleSystem scoredRightParticle;
+
     /// <summary>
     /// Reference to the pongball class
     /// </summary>
@@ -84,5 +87,14 @@ public class Tymon_Main : MonoBehaviour
         Instance.score += scoreToAdd;
         // Update ui
         Instance.uiScore.text = Instance.score.x.ToString() + " | " + Instance.score.y.ToString();
+        // Play particle
+        if(scoreToAdd.x > 0)
+        {
+            Instance.scoredRightParticle.Play();
+        }
+        else
+        {
+            Instance.scoredLeftParticle.Play();
+        }
     }
 }
