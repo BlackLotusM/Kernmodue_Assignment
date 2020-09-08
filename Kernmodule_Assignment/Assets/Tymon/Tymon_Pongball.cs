@@ -7,11 +7,11 @@ public class Tymon_Pongball
     /// <summary>
     /// The direction of the ball on the x-axis
     /// </summary>
-    private int dirX = 1;
+    private float dirX = 1;
     /// <summary>
     /// The direction of the ball on the y-axis
     /// </summary>
-    private int dirY = 1;
+    private float dirY = 1;
     /// <summary>
     /// The movement speed of the ball
     /// </summary>
@@ -61,15 +61,19 @@ public class Tymon_Pongball
         // Change dir if reached edge
         if(pos.x == 0)
         {
-            dirX = 1;
             // Touched left, point for player
+            dirX = 1;
             pos.x = 0.5f;
+            pos.y = 0.5f;
+            Tymon_Main.UpdateScore(new Vector2(0, 1));
         }
         else if(pos.x == 1)
         {
-            dirX = -1;
             // Touched right, point for enemy
+            dirX = -1;
             pos.x = 0.5f;
+            pos.y = 0.5f;
+            Tymon_Main.UpdateScore(new Vector2(1, 0));
         }
         if(pos.y == 0) dirY = 1; else if(pos.y == 1) dirY = -1;
         // Set ponball position relative to camea viewport
