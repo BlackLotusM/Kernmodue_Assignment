@@ -1,13 +1,16 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-
+using TMPro;
+using UnityEditor.UI;
 public class PowerUpBase
 {
     protected string name { get; set; }
 
     private GameObject prefab;
     private GameObject ball;
+    private test Power3;
+
 
     //The power up list will contain every powerup that exists, this is needed to send data through with the collision. It will decide what action to do on collision
     //The second object will store the gameobjects that have been spawned and contain the index of the PowerUp class associated with it
@@ -32,15 +35,15 @@ public class PowerUpBase
         GameObjectList.Add(Spawn, type);
     }
 
-    public void StartUp(GameObject prefab, GameObject ball)
+    public void StartUp(GameObject prefab, GameObject ball, GameObject canvas)
     {
-        
+        //this.canvas = canvas;
         this.ball = ball;
         this.prefab = prefab;
 
         PowerUpBase Power1 = new PowerUp_Slomo();
         PowerUpBase Power2 = new PowerUp_Speed();
-        PowerUpBase Power3 = new test();
+        Power3 = new test(canvas);
 
         //For every int in powerupsatatime it will spawn on power up in the scene.
         for (int i = 0; i < powerupsatatime; i++)
@@ -56,6 +59,7 @@ public class PowerUpBase
 
     public void UpdateAll()
     {
+        Power3.CheckFlashBang();
         //For  the moment this block of code will let you spawn a new powerup with pressing r
         if (Input.GetKeyDown(KeyCode.R))
         {

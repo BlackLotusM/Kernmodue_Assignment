@@ -11,12 +11,14 @@ public class Script_Mono : MonoBehaviour
     public GameObject prefab;
     public GameObject ball;  
     private PowerUpBase PowerUps;
+    public GameObject panel;
+
 
     private void Start()
     {
         //Runs the startup Function to add all the powerups to the dictonary
         PowerUps = new PowerUpBase();
-        PowerUps.StartUp(prefab, ball);
+        PowerUps.StartUp(prefab, ball, panel);
     }
 
     private void Update()
