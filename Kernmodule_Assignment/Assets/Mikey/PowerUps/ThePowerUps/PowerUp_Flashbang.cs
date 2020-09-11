@@ -2,15 +2,16 @@
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UIElements;
 
-public class test : PowerUpBase
+public class PowerUp_Flashbang : PowerUpBase
 {
     private Vignette vin;
     private GameObject canvas;
-    public test(GameObject flashbangpanel)
+
+    public PowerUp_Flashbang(GameObject flashbangpanel)
     {
         this.canvas = flashbangpanel;
         name = "test";
-        PowerUpList.Add(2, this);
+        powerUpList.Add(2, this);
         vin = Camera.main.GetComponent<PostProcessVolume>().profile.GetSetting<Vignette>();
     }
 
@@ -25,16 +26,15 @@ public class test : PowerUpBase
         CheckFlashBang();
     }
 
+    //Updates the flashbang effect
     public void CheckFlashBang()
     {
+        //checks camera vignette intensity if its abvove 0 it will go down
         if (Camera.main.GetComponent<PostProcessVolume>().profile.GetSetting<Vignette>().intensity > 0f)
         {
             vin.intensity.value = vin.intensity.value - 0.1f * Time.deltaTime;
         }
-        if (canvas.GetComponent<UnityEngine.UI.Image>().color == new Color(255f, 255f, 255f, 0.2f))
-        {
-            canvas.GetComponent<UnityEngine.UI.Image>().color = new Color(255f, 255f, 255f, 0.0f);
-        }
+
         if (canvas.GetComponent<UnityEngine.UI.Image>().color != new Color(255f, 255f, 255f, 0f))
         {
             canvas.GetComponent<UnityEngine.UI.Image>().color = Color.Lerp(canvas.GetComponent<UnityEngine.UI.Image>().color, new Color(255f, 255f, 255f, 0f), 0.7f * Time.deltaTime);

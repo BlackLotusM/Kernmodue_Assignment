@@ -8,7 +8,7 @@ public class PowerUp_Speed : PowerUpBase
     public PowerUp_Speed()
     {
         name = "Speed";
-        PowerUpList.Add(1, this);
+        powerUpList.Add(1, this);
     }
 
     //changes color of the ball just to test 

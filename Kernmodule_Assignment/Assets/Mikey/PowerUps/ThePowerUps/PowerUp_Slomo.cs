@@ -9,7 +9,7 @@ public class PowerUp_Slomo : PowerUpBase
     public PowerUp_Slomo()
     {
         name = "Slomo";
-        PowerUpList.Add(0, this);   
+        powerUpList.Add(0, this);   
     }
 
     //the color of the sphere changes, just testing

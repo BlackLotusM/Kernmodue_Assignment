@@ -8,21 +8,37 @@ using UnityEngine;
 
 public class Script_Mono : MonoBehaviour
 {
+    /// <summary>
+    /// Prefab for the powerups to use
+    /// </summary>
     public GameObject prefab;
-    public GameObject ball;  
-    private PowerUpBase PowerUps;
+
+    /// <summary>
+    /// Reference to the ball object
+    /// </summary>
+    public GameObject ball;
+
+    /// <summary>
+    /// Reference to the powerup class
+    /// </summary>
+    private PowerUpBase powerups;
+
+    /// <summary>
+    /// Reference to the flashbang powerup
+    /// </summary>
     public GameObject panel;
 
 
     private void Start()
     {
-        //Runs the startup Function to add all the powerups to the dictonary
-        PowerUps = new PowerUpBase();
-        PowerUps.StartUp(prefab, ball, panel);
+        //Instantiates the powerup class to run the startup to add everything to the dictonary
+        powerups = new PowerUpBase();
+        powerups.StartUp(prefab, ball, panel);
     }
 
     private void Update()
     {
-        PowerUps.UpdateAll();
+        //Updates the powerups
+        powerups.UpdateAll();
     }
 }
