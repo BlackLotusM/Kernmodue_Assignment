@@ -45,10 +45,9 @@ public class Tymon_Enemy
     public void Update()
     {
         // Move the enemy position y-axis towords the ball y-axis, when the ball is over an x-axis threshold
-        if(ball.position.x <= 4)
-        { 
+        
             enemy.position = Vector3.MoveTowards(enemy.position, ball.position, enemySpeed * Time.deltaTime);
             enemy.position = new Vector3(xPositionLock, enemy.position.y, enemy.position.z);
-        }
+        
     }
 }
