@@ -63,22 +63,22 @@ public class Tymon_Pongball
         Vector3 pos = Camera.main.WorldToViewportPoint(pongball.position);
         pos.x = Mathf.Clamp01(pos.x);
         pos.y = Mathf.Clamp01(pos.y);
-        // Change dir if reached edge
+        // Change direction if pongball reached edge, add a point for the other side that scored
         if(pos.x == 0)
         {
-            // Touched left, point for player
-            dirX = 1;
+            // Hit left wall, reset to middle, inverse dirX and add point for player
             pos.x = 0.5f;
             pos.y = 0.5f;
+            dirX = 1;
             movementSpeedScaler = 1;
             Tymon_Main.UpdateScore(new Vector2(0, 1));
         }
         else if(pos.x == 1)
         {
-            // Touched right, point for enemy
-            dirX = -1;
+            // Hit right wall, reset to middle, inverse dirX and add point for enemy
             pos.x = 0.5f;
             pos.y = 0.5f;
+            dirX = -1;
             movementSpeedScaler = 1;
             Tymon_Main.UpdateScore(new Vector2(1, 0));
         }
