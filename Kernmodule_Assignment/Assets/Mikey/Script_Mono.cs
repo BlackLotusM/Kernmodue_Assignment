@@ -1,56 +1,44 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 using System.Linq;
+using System.Net.WebSockets;
+using System.Runtime.CompilerServices;
+using System.Xml.Schema;
+using UnityEngine;
 
 public class Script_Mono : MonoBehaviour
 {
+    /// <summary>
+    /// Prefab for the powerups to use
+    /// </summary>
+    public GameObject prefab;
 
+    /// <summary>
+    /// Reference to the ball object
+    /// </summary>
+    public GameObject ball;
 
-    //TO-DO make list gameobject 
+    /// <summary>
+    /// Reference to the powerup class
+    /// </summary>
+    private PowerUpBase powerups;
 
-    public GameObject PowerUpBlock;
-    private First_PU PU;
+    /// <summary>
+    /// Reference to the flashbang powerup
+    /// </summary>
+    public GameObject panel;
 
-    int numEnemies = 4;
-
-    public List<First_PU> PowerList;
 
     private void Start()
     {
-        PU = new First_PU(PowerUpBlock);
-        PowerList = new List<First_PU>();
-
-        for (int i = 0; i < numEnemies; i++)
-        {
-            PowerList.Add(new First_PU(PU.Powerupblock));
-        }
+        //Instantiates the powerup class to run the startup to add everything to the dictonary
+        powerups = new PowerUpBase();
+        powerups.StartUp(prefab, ball, panel);
     }
 
     private void Update()
     {
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            Debug.Log(PowerList);
-            PowerList.Add(new First_PU(PU.Powerupblock));
-            Debug.Log(PowerList.Count);
-
-            if(PowerList.Count > 13)
-            {
-                First_PU p = PowerList[13];
-                p.changeColors();
-            }
-        }        
-
-        if (Input.GetKeyDown(KeyCode.Mouse0))
-        {
-            PU.spawn("" + PowerList.Count);
-            PowerList.Add(PU);
-
-            for (int i = 0; i < PowerList.Count; i++)
-            {
-                First_PU pb = PowerList[i];
-            }
-        }
+        //Updates the powerups
+        powerups.UpdateAll();
     }
 }
