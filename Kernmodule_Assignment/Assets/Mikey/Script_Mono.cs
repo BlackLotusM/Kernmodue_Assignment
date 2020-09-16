@@ -19,32 +19,32 @@ public class Script_Mono : MonoBehaviour
     public GameObject ball;
 
     /// <summary>
-    /// Reference to the powerup class
-    /// </summary>
-    private PowerUpBase powerups;
-
-    /// <summary>
     /// Reference to the flashbang powerup
     /// </summary>
     public GameObject panel;
 
-
     public Color color1 = Color.black;
     public Color color2 = Color.blue;
-    private float duration = 3.0F;
 
-    private void Start()
+    /// <summary>
+    /// Reference to the powerup class
+    /// </summary>
+    private PowerUpBase _powerUps;
+
+    private float _duration = 3.0F;
+
+    public void Start()
     {
         //Instantiates the powerup class to run the startup to add everything to the dictonary
-        powerups = new PowerUpBase();
-        powerups.StartUp(prefab, ball, panel);
+        _powerUps = new PowerUpBase();
+        _powerUps.StartUp(prefab, ball, panel);
     }
 
-    private void Update()
+    public void Update()
     {
         //Updates the powerups
-        powerups.UpdateAll();
-        float t = Mathf.PingPong(Time.time, duration) / duration;
+        _powerUps.UpdateAll();
+        float t = Mathf.PingPong(Time.time, _duration) / _duration;
         Camera.main.backgroundColor = Color.Lerp(color1, color2, t);
     }
 }

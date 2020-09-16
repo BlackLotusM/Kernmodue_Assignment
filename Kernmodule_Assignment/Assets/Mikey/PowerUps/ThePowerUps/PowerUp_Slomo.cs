@@ -8,14 +8,14 @@ public class PowerUp_Slomo : PowerUpBase, IRotateable
     //constructor
     public PowerUp_Slomo()
     {
-        name = "Slomo";
-        powerUpList.Add(0, this);   
+        _name = "Slomo";
+        _powerUpList.Add(0, this);   
     }
 
     //the color of the sphere changes, just testing
     public override void DoAction(GameObject ball)
     {
-        Debug.Log("slomo died");
+        Tymon_Pongball.ChangeSpeed(-2.5f);
     }
 
     //For now this will set the color of the powerup

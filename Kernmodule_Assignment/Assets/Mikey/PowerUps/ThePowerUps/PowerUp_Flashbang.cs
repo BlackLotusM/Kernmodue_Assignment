@@ -1,18 +1,17 @@
 ﻿using UnityEngine;
 using UnityEngine.Rendering.PostProcessing;
-using UnityEngine.UIElements;
 
 public class PowerUp_Flashbang : PowerUpBase, IRotateable
 {
-    private Vignette vin;
-    private GameObject canvas;
+    private Vignette _vin;
+    private GameObject _canvas;
 
     public PowerUp_Flashbang(GameObject flashbangpanel)
     {
-        this.canvas = flashbangpanel;
-        name = "test";
-        powerUpList.Add(2, this);
-        vin = Camera.main.GetComponent<PostProcessVolume>().profile.GetSetting<Vignette>();
+        this._canvas = flashbangpanel;
+        _name = "test";
+        _powerUpList.Add(2, this);
+        _vin = Camera.main.GetComponent<PostProcessVolume>().profile.GetSetting<Vignette>();
     }
 
     //the color of the sphere changes, just testing
@@ -20,8 +19,8 @@ public class PowerUp_Flashbang : PowerUpBase, IRotateable
     {
         Debug.Log("slomo died");
 
-        vin.intensity.value = 1f;
-        canvas.GetComponent<UnityEngine.UI.Image>().color = new Color(255f, 255, 255, 1f);
+        _vin.intensity.value = 1f;
+        _canvas.GetComponent<UnityEngine.UI.Image>().color = new Color(255f, 255, 255, 1f);
         CheckFlashBang();
     }
 
@@ -31,12 +30,12 @@ public class PowerUp_Flashbang : PowerUpBase, IRotateable
         //checks camera vignette intensity if its abvove 0 it will go down
         if (Camera.main.GetComponent<PostProcessVolume>().profile.GetSetting<Vignette>().intensity > 0f)
         {
-            vin.intensity.value = vin.intensity.value - 0.1f * Time.deltaTime;
+            _vin.intensity.value = _vin.intensity.value - 0.1f * Time.deltaTime;
         }
 
-        if (canvas.GetComponent<UnityEngine.UI.Image>().color != new Color(255f, 255f, 255f, 0f))
+        if (_canvas.GetComponent<UnityEngine.UI.Image>().color != new Color(255f, 255f, 255f, 0f))
         {
-            canvas.GetComponent<UnityEngine.UI.Image>().color = Color.Lerp(canvas.GetComponent<UnityEngine.UI.Image>().color, new Color(255f, 255f, 255f, 0f), 0.7f * Time.deltaTime);
+            _canvas.GetComponent<UnityEngine.UI.Image>().color = Color.Lerp(_canvas.GetComponent<UnityEngine.UI.Image>().color, new Color(255f, 255f, 255f, 0f), 0.7f * Time.deltaTime);
         }
     }
 

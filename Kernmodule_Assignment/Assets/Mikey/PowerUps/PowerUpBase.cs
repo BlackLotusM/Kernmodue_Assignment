@@ -1,28 +1,26 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
-using TMPro;
-using UnityEditor.UI;
-using UnityEngine.UIElements;
 
 public class PowerUpBase : IRotateable
 {
-    protected string name { get; set; }
+    protected string _name { get; set; }
 
-    private GameObject prefab;
-    private GameObject ball;
-    private GameObject canvas;
-    private PowerUp_Flashbang power3;
+    private GameObject _prefab;
+    private GameObject _ball;
+    private GameObject _canvas;
+    private PowerUp_Flashbang _power3;
+    private PowerUp_Small _power4;
 
 
     //The power up list will contain every powerup that exists, this is needed to send data through with the collision. It will decide what action to do on collision
     //The second object will store the gameobjects that have been spawned and contain the index of the PowerUp class associated with it
-    protected static Dictionary<int, PowerUpBase> powerUpList = new Dictionary<int, PowerUpBase>();
-    protected static Dictionary<GameObject, int> gameObjectList = new Dictionary<GameObject, int>();
+    protected static Dictionary<int, PowerUpBase> _powerUpList = new Dictionary<int, PowerUpBase>();
+    protected static Dictionary<GameObject, int> _gameObjectList = new Dictionary<GameObject, int>();
 
-    private int powerupsatatime = 2;
+    private int _powerupsatatime = 2;
 
-    private PowerUpBase value;
+    private PowerUpBase _value;
 
     //This instantiates the prefab
     //Changes the name
@@ -33,30 +31,31 @@ public class PowerUpBase : IRotateable
         //takes the screen region to spawn between
         Vector3 screenPosition = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(300, Screen.width - 100), Random.Range(0, Screen.height), 10));
         GameObject Spawn = GameObject.Instantiate(obj, screenPosition, Quaternion.identity);
-        Spawn.name = name;
+        Spawn.name = _name;
         Test2(Spawn);
-        gameObjectList.Add(Spawn, type);
+        _gameObjectList.Add(Spawn, type);
     }
 
-    public void StartUp(GameObject _prefab, GameObject _ball, GameObject _canvas)
+    public void StartUp(GameObject prefab, GameObject ball, GameObject canvas)
     {
-        this.ball = _ball;
-        this.prefab = _prefab;
-        this.canvas = _canvas;
+        this._ball = ball;
+        this._prefab = prefab;
+        this._canvas = canvas;
 
         //makes the constructor run once to add themself to the dictonary
         PowerUpBase power1 = new PowerUp_Slomo();
         PowerUpBase power2 = new PowerUp_Speed();
-        power3 = new PowerUp_Flashbang(canvas);
+        _power3 = new PowerUp_Flashbang(_canvas);
+        _power4 = new PowerUp_Small();
 
         //For every int in powerupsatatime it will spawn on power up in the scene.
-        for (int i = 0; i < powerupsatatime; i++)
+        for (int i = 0; i < _powerupsatatime; i++)
         {
             //This random int will be between all available powerup indexes
-            int typeIndex = Random.Range(0, powerUpList.Count);
-            if (powerUpList.TryGetValue(typeIndex, out value))
+            int typeIndex = Random.Range(0, _powerUpList.Count);
+            if (_powerUpList.TryGetValue(typeIndex, out _value))
             {
-                value.Spawn(prefab, typeIndex);
+                _value.Spawn(_prefab, typeIndex);
             }
         }
     }
@@ -64,33 +63,25 @@ public class PowerUpBase : IRotateable
     public void UpdateAll()
     {
         //updates the flashbang stats
-        power3.CheckFlashBang();
-        //For  the moment this block of code will let you spawn a new powerup with pressing r
-        if (Input.GetKeyDown(KeyCode.R))
-        {
-            int r = Random.Range(0, powerUpList.Count);
-            if (powerUpList.TryGetValue(r, out value))
-            {
-                value.Spawn(prefab, r);
-            }
-        }
+        _power3.CheckFlashBang();
+        _power4.ReDoSize(_ball);
 
         //spawns new powerups if count is under 2
-        if (gameObjectList.Count < 2)
+        if (_gameObjectList.Count < 2)
         {
-            int r = Random.Range(0, powerUpList.Count);
-            if (powerUpList.TryGetValue(r, out value))
+            int r = Random.Range(0, _powerUpList.Count);
+            if (_powerUpList.TryGetValue(r, out _value))
             {
-                value.Spawn(prefab, r);
+                _value.Spawn(_prefab, r);
             }
         }
 
         //To List is needed because of errors, to list will make a temp list at the beginning of the foreach loop. This will let me remove deleted objects in the base class
-        foreach (var element in gameObjectList.ToList())
+        foreach (var element in _gameObjectList.ToList())
         {
-            if (powerUpList.TryGetValue(element.Value, out value))
+            if (_powerUpList.TryGetValue(element.Value, out _value))
             {
-                value.CheckCol(ball, element.Key);
+                _value.CheckCol(_ball, element.Key);
             }
         }
     }
@@ -118,9 +109,9 @@ public class PowerUpBase : IRotateable
     //will also call the action
     public void CheckCol(GameObject player, GameObject powerup)
     {
-        if (Vector3.Distance(player.transform.position, powerup.transform.position) < 1)
+        if (Vector3.Distance(player.transform.position, powerup.transform.position) < 0.5 + (player.transform.localScale.x / 2))
         {
-            gameObjectList.Remove(powerup);
+            _gameObjectList.Remove(powerup);
             GameObject.Destroy(powerup);
             Camera.main.GetComponent<AudioSource>().Play();
             DoAction(player);
