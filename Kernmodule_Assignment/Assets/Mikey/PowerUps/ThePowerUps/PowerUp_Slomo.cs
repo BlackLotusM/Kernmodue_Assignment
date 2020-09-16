@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerUp_Slomo : PowerUpBase
+public class PowerUp_Slomo : PowerUpBase, IRotateable
 {
 
     //constructor
@@ -16,8 +16,6 @@ public class PowerUp_Slomo : PowerUpBase
     public override void DoAction(GameObject ball)
     {
         Debug.Log("slomo died");
-        ball.GetComponent<MeshRenderer>().material.color = Color.blue;
-
     }
 
     //For now this will set the color of the powerup

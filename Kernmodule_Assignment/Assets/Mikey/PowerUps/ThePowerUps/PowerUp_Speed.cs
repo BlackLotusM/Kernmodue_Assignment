@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PowerUp_Speed : PowerUpBase
+public class PowerUp_Speed : PowerUpBase, IRotateable
 {
     //constructor
     public PowerUp_Speed()
@@ -15,7 +15,6 @@ public class PowerUp_Speed : PowerUpBase
     public override void DoAction(GameObject ball)
     {
         Debug.Log("speed died");
-        ball.GetComponent<MeshRenderer>().material.color = Color.red;
     }
 
     //Changes color of the power up just to show its working

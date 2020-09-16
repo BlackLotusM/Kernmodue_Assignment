@@ -2,7 +2,7 @@
 using UnityEngine.Rendering.PostProcessing;
 using UnityEngine.UIElements;
 
-public class PowerUp_Flashbang : PowerUpBase
+public class PowerUp_Flashbang : PowerUpBase, IRotateable
 {
     private Vignette vin;
     private GameObject canvas;
@@ -19,7 +19,6 @@ public class PowerUp_Flashbang : PowerUpBase
     public override void DoAction(GameObject ball)
     {
         Debug.Log("slomo died");
-        ball.GetComponent<MeshRenderer>().material.color = Color.green;
 
         vin.intensity.value = 1f;
         canvas.GetComponent<UnityEngine.UI.Image>().color = new Color(255f, 255, 255, 1f);

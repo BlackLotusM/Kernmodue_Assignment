@@ -29,6 +29,10 @@ public class Script_Mono : MonoBehaviour
     public GameObject panel;
 
 
+    public Color color1 = Color.black;
+    public Color color2 = Color.blue;
+    private float duration = 3.0F;
+
     private void Start()
     {
         //Instantiates the powerup class to run the startup to add everything to the dictonary
@@ -40,5 +44,7 @@ public class Script_Mono : MonoBehaviour
     {
         //Updates the powerups
         powerups.UpdateAll();
+        float t = Mathf.PingPong(Time.time, duration) / duration;
+        Camera.main.backgroundColor = Color.Lerp(color1, color2, t);
     }
 }
