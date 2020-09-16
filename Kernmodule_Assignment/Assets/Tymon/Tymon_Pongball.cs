@@ -60,7 +60,7 @@ public class Tymon_Pongball
     private void Movement()
     {
         // Move
-            //movementSpeedScaler += Time.deltaTime * 0.1f; Disabled cause of powerups
+        movementSpeedScaler += Time.deltaTime * 0.1f;
         pongball.position = new Vector3(pongball.position.x + dirX * movementSpeed * movementSpeedScaler * Time.deltaTime, pongball.position.y + dirY * movementSpeed * Time.deltaTime, 0);
         // Clamp inside camera view
         Vector3 pos = Camera.main.WorldToViewportPoint(pongball.position);
@@ -74,6 +74,7 @@ public class Tymon_Pongball
             pos.y = 0.5f;
             dirX = 1;
             movementSpeedScaler = 1;
+            movementSpeed = 5f;
             Tymon_Main.UpdateScore(new Vector2(0, 1));
         }
         else if(pos.x == 1)
@@ -83,6 +84,7 @@ public class Tymon_Pongball
             pos.y = 0.5f;
             dirX = -1;
             movementSpeedScaler = 1;
+            movementSpeed = 5f;
             Tymon_Main.UpdateScore(new Vector2(1, 0));
         }
         if(pos.y == 0) dirY = 1; else if(pos.y == 1) dirY = -1;
@@ -123,6 +125,7 @@ public class Tymon_Pongball
             Debug.LogError("Tymon_Ponball hasnt been created yet, create it first dummy");
             return;
         }
-        Instance.movementSpeed = newSpeed;
+        Instance.movementSpeed += newSpeed;
+        if(Instance.movementSpeed < 4) Instance.movementSpeed = 4;
     }
 }
