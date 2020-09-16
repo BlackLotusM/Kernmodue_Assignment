@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Tymon_Pongball
 {
+    public static Tymon_Pongball Instance { get; set; }
+
     /// <summary>
     /// The direction of the ball on the x-axis
     /// </summary>
@@ -40,6 +42,7 @@ public class Tymon_Pongball
         this.pongball = pongball;
         this.movementSpeed = movementSpeed;
         this.bars = bars;
+        Instance = this;
     }
 
     /// <summary>
@@ -57,7 +60,7 @@ public class Tymon_Pongball
     private void Movement()
     {
         // Move
-        movementSpeedScaler += Time.deltaTime * 0.1f;
+            //movementSpeedScaler += Time.deltaTime * 0.1f; Disabled cause of powerups
         pongball.position = new Vector3(pongball.position.x + dirX * movementSpeed * movementSpeedScaler * Time.deltaTime, pongball.position.y + dirY * movementSpeed * Time.deltaTime, 0);
         // Clamp inside camera view
         Vector3 pos = Camera.main.WorldToViewportPoint(pongball.position);
@@ -107,5 +110,19 @@ public class Tymon_Pongball
                 }
             }
         }
+    }
+
+    /// <summary>
+    /// Change the current speed of the ball
+    /// </summary>
+    /// <param name="newSpeed">The new speed in float value</param>
+    public static void ChangeSpeed(float newSpeed)
+    {
+        if(Instance == null)
+        {
+            Debug.LogError("Tymon_Ponball hasnt been created yet, create it first dummy");
+            return;
+        }
+        Instance.movementSpeed = newSpeed;
     }
 }
