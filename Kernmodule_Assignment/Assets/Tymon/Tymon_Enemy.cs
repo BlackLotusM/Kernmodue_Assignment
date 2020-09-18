@@ -10,19 +10,19 @@ public class Tymon_Enemy
     /// <summary>
     /// The speed at which the enemy can move
     /// </summary>
-    private float enemySpeed;
+    protected float _enemySpeed;
     /// <summary>
     /// The x-axis the enemy is locked on (cannot move towords other x-axis value)
     /// </summary>
-    private float xPositionLock;
+    protected float _xPositionLock;
     /// <summary>
     /// Reference to the enemy transform
     /// </summary>
-    private Transform enemy;
+    protected Transform _enemy;
     /// <summary>
     /// Reference to the ball transform
     /// </summary>
-    private Transform ball;
+    protected Transform _ball;
 
     /// <summary>
     /// Set values for this class
@@ -33,21 +33,19 @@ public class Tymon_Enemy
     /// <param name="enemySpeed">The speed at which the enemy can move</param>
     public Tymon_Enemy(Transform enemy, Transform ball, float xPositionLock, float enemySpeed)
     {
-        this.enemy = enemy;
-        this.ball = ball;
-        this.xPositionLock = xPositionLock;
-        this.enemySpeed = enemySpeed;
+        this._enemy = enemy;
+        this._ball = ball;
+        this._xPositionLock = xPositionLock;
+        this._enemySpeed = enemySpeed;
     }
 
     /// <summary>
     /// Called by Tymon_Main to update this class
     /// </summary>
-    public void Update()
+    public virtual void Update()
     {
-        // Move the enemy position y-axis towords the ball y-axis, when the ball is over an x-axis threshold
-        
-            enemy.position = Vector3.MoveTowards(enemy.position, ball.position, enemySpeed * Time.deltaTime);
-            enemy.position = new Vector3(xPositionLock, enemy.position.y, enemy.position.z);
-        
+        // Move the enemy position y-axis towords the ball y-axis, when the ball is over an x-axis threshold        
+        _enemy.position = Vector3.MoveTowards(_enemy.position, _ball.position, _enemySpeed * Time.deltaTime);
+        _enemy.position = new Vector3(_xPositionLock, _enemy.position.y, _enemy.position.z);        
     }
 }

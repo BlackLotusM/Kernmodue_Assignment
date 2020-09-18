@@ -4,32 +4,32 @@ using UnityEngine;
 
 public class Tymon_Pongball
 {
-    public static Tymon_Pongball Instance { get; set; }
+    public static Tymon_Pongball INSTANCE { get; set; }
 
     /// <summary>
     /// The direction of the ball on the x-axis
     /// </summary>
-    private float dirX = 1;
+    private float _dirX = 1;
     /// <summary>
     /// The direction of the ball on the y-axis
     /// </summary>
-    private float dirY = 1;
+    private float _dirY = 1;
     /// <summary>
     /// The movement speed of the ball
     /// </summary>
-    private float movementSpeed;
+    private float _movementSpeed;
     /// <summary>
     /// Makes the ball go faster the more time gos on (resets when scored)
     /// </summary>
-    private float movementSpeedScaler = 1;
+    private float _movementSpeedScaler = 1;
     /// <summary>
     /// Reference to the pongball transform
     /// </summary>
-    private Transform pongball = null;
+    private Transform _pongball = null;
     /// <summary>
     /// Reference to the player and enemy transform (I call them bars)
     /// </summary>
-    private Transform[] bars;
+    private Transform[] _bars = null;
 
     /// <summary>
     /// Set class values
@@ -39,10 +39,10 @@ public class Tymon_Pongball
     /// <param name="bars">Reference to the enemy and player transforms</param>
     public Tymon_Pongball(Transform pongball, float movementSpeed, Transform[] bars)
     {
-        this.pongball = pongball;
-        this.movementSpeed = movementSpeed;
-        this.bars = bars;
-        Instance = this;
+        this._pongball = pongball;
+        this._movementSpeed = movementSpeed;
+        this._bars = bars;
+        INSTANCE = this;
     }
 
     /// <summary>
@@ -60,10 +60,10 @@ public class Tymon_Pongball
     private void Movement()
     {
         // Move
-        movementSpeedScaler += Time.deltaTime * 0.1f;
-        pongball.position = new Vector3(pongball.position.x + dirX * movementSpeed * movementSpeedScaler * Time.deltaTime, pongball.position.y + dirY * movementSpeed * Time.deltaTime, 0);
+        _movementSpeedScaler += Time.deltaTime * 0.1f;
+        _pongball.position = new Vector3(_pongball.position.x + _dirX * _movementSpeed * _movementSpeedScaler * Time.deltaTime, _pongball.position.y + _dirY * _movementSpeed * Time.deltaTime, 0);
         // Clamp inside camera view
-        Vector3 pos = Camera.main.WorldToViewportPoint(pongball.position);
+        Vector3 pos = Camera.main.WorldToViewportPoint(_pongball.position);
         pos.x = Mathf.Clamp01(pos.x);
         pos.y = Mathf.Clamp01(pos.y);
         // Change direction if pongball reached edge, add a point for the other side that scored
@@ -72,9 +72,9 @@ public class Tymon_Pongball
             // Hit left wall, reset to middle, inverse dirX and add point for player
             pos.x = 0.5f;
             pos.y = 0.5f;
-            dirX = 1;
-            movementSpeedScaler = 1;
-            movementSpeed = 5f;
+            _dirX = 1;
+            _movementSpeedScaler = 1;
+            _movementSpeed = 5f;
             Tymon_Main.UpdateScore(new Vector2(0, 1));
         }
         else if(pos.x == 1)
@@ -82,14 +82,14 @@ public class Tymon_Pongball
             // Hit right wall, reset to middle, inverse dirX and add point for enemy
             pos.x = 0.5f;
             pos.y = 0.5f;
-            dirX = -1;
-            movementSpeedScaler = 1;
-            movementSpeed = 5f;
+            _dirX = -1;
+            _movementSpeedScaler = 1;
+            _movementSpeed = 5f;
             Tymon_Main.UpdateScore(new Vector2(1, 0));
         }
-        if(pos.y == 0) dirY = 1; else if(pos.y == 1) dirY = -1;
+        if(pos.y == 0) _dirY = 1; else if(pos.y == 1) _dirY = -1;
         // Set ponball position relative to camea viewport
-        pongball.position = Camera.main.ViewportToWorldPoint(pos);
+        _pongball.position = Camera.main.ViewportToWorldPoint(pos);
     }
 
     /// <summary>
@@ -97,18 +97,18 @@ public class Tymon_Pongball
     /// </summary>
     private void Collision()
     {
-        foreach(Transform bar in bars)
+        foreach(Transform bar in _bars)
         {
             // Check if ball pos hits barpos ( Bounce off),
             // Check x
-            if(pongball.position.x <= bar.position.x + bar.localScale.x && pongball.position.x >= bar.position.x - bar.localScale.x)
+            if(_pongball.position.x <= bar.position.x + bar.localScale.x && _pongball.position.x >= bar.position.x - bar.localScale.x)
             {
                 // Check y
-                if(pongball.position.y <= bar.position.y + bar.localScale.y && pongball.position.y >= bar.position.y - bar.localScale.y)
+                if(_pongball.position.y <= bar.position.y + bar.localScale.y && _pongball.position.y >= bar.position.y - bar.localScale.y)
                 {
                     // Bounche off in the right direction
-                    if(pongball.position.x < bar.position.x) dirX = -1; else dirX = 1;
-                    if(pongball.position.y < bar.position.y) dirY = -1; else dirY = 1;
+                    if(_pongball.position.x < bar.position.x) _dirX = -1; else _dirX = 1;
+                    if(_pongball.position.y < bar.position.y) _dirY = -1; else _dirY = 1;
                 }
             }
         }
@@ -120,12 +120,12 @@ public class Tymon_Pongball
     /// <param name="newSpeed">The new speed in float value</param>
     public static void ChangeSpeed(float newSpeed)
     {
-        if(Instance == null)
+        if(INSTANCE == null)
         {
             Debug.LogError("Tymon_Ponball hasnt been created yet, create it first dummy");
             return;
         }
-        Instance.movementSpeed += newSpeed;
-        if(Instance.movementSpeed < 4) Instance.movementSpeed = 4;
+        INSTANCE._movementSpeed += newSpeed;
+        if(INSTANCE._movementSpeed < 4) INSTANCE._movementSpeed = 4;
     }
 }
