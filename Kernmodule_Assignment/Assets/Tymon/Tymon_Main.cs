@@ -8,73 +8,71 @@ using TMPro;
 /// </summary>
 public class Tymon_Main : MonoBehaviour
 {
-    public static Tymon_Main Instance { get; set; }
-
+    public static Tymon_Main INSTANCE { get; set; }
+    [Header("Vars")]
     /// <summary>
     /// The score of the player and ai, x = ai, y = player
     /// </summary>
-    public Vector2 score;
+    public Vector2 _score;
     /// <summary>
     /// The speed of the ball, only added when created (cannot be updated)
     /// </summary>
-    public float ballSpeed = 5f;
-
+    public float _ballSpeed = 5f;
+    [Header("Needed Components")]
     /// <summary>
     /// The transform of the pongball (the ball that bounces over the screen)
     /// </summary>
-    public Transform pongball;
+    public Transform _pongball;
     /// <summary>
     /// The transform of the player, this one is located on the right side of the screen
     /// </summary>
-    public Transform player;
+    public Transform _player;
     /// <summary>
     /// The transform of the enemy, this one is located on the left side of the screen
     /// </summary>
-    public Transform enemy;
+    public Transform _enemy;
     /// <summary>
     /// The textmeshprogui component that displays the score
     /// </summary>
-    public TextMeshProUGUI uiScore;
+    public TextMeshProUGUI _uiScore;
 
-    public ParticleSystem scoredLeftParticle;
-    public ParticleSystem scoredRightParticle;
+    public ParticleSystem _scoredLeftParticle;
+    public ParticleSystem _scoredRightParticle;
+
+    public GameObject _buttonSingleplayer;
+    public GameObject _buttonMultiplayer;
 
     /// <summary>
     /// Reference to the pongball class
     /// </summary>
-    private Tymon_Pongball tymon_pongball;
+    private Tymon_Pongball _tymon_pongball;
     /// <summary>
     /// Reference to the player class
     /// </summary>
-    private Tymon_Player tymon_player;
+    private Tymon_Player _tymon_player;
     /// <summary>
     /// Reference to the enemy class
     /// </summary>
-    private Tymon_Enemy tymon_enemy;
+    private Tymon_Enemy _tymon_enemy;
 
     private void Awake()
     {
-        Instance = this;
+        INSTANCE = this;
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        // Create a transform array for the ball to check for collisions
-        Transform[] arr = { player, enemy };
-        // Set the class references/ create the classes
-        tymon_pongball = new Tymon_Pongball(pongball, ballSpeed, arr);
-        tymon_player = new Tymon_Player(player, 10f, 8f);
-        tymon_enemy = new Tymon_Enemy(enemy, pongball, -7f, 9f);
+        
     }
 
     // Update is called once per frame
     void Update()
     {
         // Update the classes via the Update Methode (Not the monobehaivor Update()!)
-        tymon_pongball.Update();
-        tymon_player.Update();
-        tymon_enemy.Update();
+        _tymon_pongball?.Update();
+        _tymon_player?.Update();
+        _tymon_enemy?.Update();
     }
 
     /// <summary>
@@ -84,17 +82,43 @@ public class Tymon_Main : MonoBehaviour
     public static void UpdateScore(Vector2 scoreToAdd)
     {
         // Add score
-        Instance.score += scoreToAdd;
+        INSTANCE._score += scoreToAdd;
         // Update ui
-        Instance.uiScore.text = Instance.score.x.ToString() + " | " + Instance.score.y.ToString();
+        INSTANCE._uiScore.text = INSTANCE._score.x.ToString() + " | " + INSTANCE._score.y.ToString();
         // Play particle
         if(scoreToAdd.x > 0)
         {
-            Instance.scoredRightParticle.Play();
+            INSTANCE._scoredRightParticle.Play();
         }
         else
         {
-            Instance.scoredLeftParticle.Play();
+            INSTANCE._scoredLeftParticle.Play();
         }
+    }
+
+    public void ButtonPressedSingleplayer()
+    {
+        // Disable buttons
+        _buttonSingleplayer.SetActive(false);
+        _buttonMultiplayer.SetActive(false);
+        // Create a transform array for the ball to check for collisions
+        Transform[] arr = { _player, _enemy };
+        // Set the class references/ create the classes
+        _tymon_pongball = new Tymon_Pongball(_pongball, _ballSpeed, arr);
+        _tymon_player = new Tymon_Player(_player, 10f, 8f);
+        _tymon_enemy = new Tymon_Enemy(_enemy, _pongball, -7f, 9f);
+    }
+
+    public void ButtonPressedMultiplayer()
+    {
+        // Disable buttons
+        _buttonSingleplayer.SetActive(false);
+        _buttonMultiplayer.SetActive(false);
+        // Create a transform array for the ball to check for collisions
+        Transform[] arr = { _player, _enemy };
+        // Set the class references/ create the classes
+        _tymon_pongball = new Tymon_Pongball(_pongball, _ballSpeed, arr);
+        _tymon_player = new Tymon_Player(_player, 10f, 8f);
+        _tymon_enemy = new Tymon_Player_1(_enemy, _pongball, -7f, 10f);
     }
 }
