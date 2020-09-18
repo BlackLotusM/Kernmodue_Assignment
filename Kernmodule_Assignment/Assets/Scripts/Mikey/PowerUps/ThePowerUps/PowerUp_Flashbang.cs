@@ -6,9 +6,9 @@ public class PowerUp_Flashbang : PowerUpBase, IRotateable
     private Vignette _vin;
     private GameObject _canvas;
 
-    public PowerUp_Flashbang(GameObject flashbangpanel)
+    public PowerUp_Flashbang(GameObject flashbangPanel)
     {
-        this._canvas = flashbangpanel;
+        this._canvas = flashbangPanel;
         _name = "test";
         _powerUpList.Add(2, this);
         _vin = Camera.main.GetComponent<PostProcessVolume>().profile.GetSetting<Vignette>();
@@ -40,13 +40,13 @@ public class PowerUp_Flashbang : PowerUpBase, IRotateable
     }
 
     //For now this will set the color of the powerup
-    public override void Test2(GameObject obj)
+    public override void PowerUpColor(GameObject obj)
     {
         obj.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 255.0f, 1.0f, 0.20f);
     }
 
-    public override void Rotate(GameObject PU)
+    public override void Rotate(GameObject powerUp)
     {
-        PU.transform.Rotate(new Vector3(2, 0, 8) * Time.deltaTime * 40f);
+        powerUp.transform.Rotate(new Vector3(2, 0, 8) * Time.deltaTime * 40f);
     }
 }

@@ -1,36 +1,78 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
+using System.Linq;
+using System.Net.WebSockets;
+using System.Runtime.CompilerServices;
+using System.Xml.Schema;
 using TMPro;
+using UnityEngine;
 
-/// <summary>
-/// The main class where the monobehaviour is located and the other classes are updated
-/// </summary>
-public class Tymon_Main : MonoBehaviour
+public class Script_Mono : MonoBehaviour
 {
-    public static Tymon_Main INSTANCE { get; set; }
+
+    //Gedeelte van mikey
+    [Header("Power Up Components")]
+    /// <summary>
+    /// Prefab for the powerups to use
+    /// </summary>
+    public GameObject _powerUpPrefab;
+
+    /// <summary>
+    /// Reference to the ball object
+    /// </summary>
+    public GameObject _ballGameObject;
+
+    /// <summary>
+    /// Reference to the flashbang powerup
+    /// </summary>
+    public GameObject _panel;
+
+    /// <summary>
+    /// 2 Colors to lerp the background between.
+    /// </summary>
+    public Color _color1 = Color.black;
+    public Color _color2 = Color.blue;
+
+    /// <summary>
+    /// Lerp time
+    /// </summary>
+    private float _duration = 3.0F;
+
+    /// <summary>
+    /// Reference to the powerup class
+    /// </summary>
+    private PowerUpBase _powerUps;
+
+
+    //Gedeelte tymon
+    public static Script_Mono INSTANCE { get; set; }
     [Header("Vars")]
     /// <summary>
     /// The score of the player and ai, x = ai, y = player
     /// </summary>
     public Vector2 _score;
+
     /// <summary>
     /// The speed of the ball, only added when created (cannot be updated)
     /// </summary>
     public float _ballSpeed = 5f;
+
     [Header("Needed Components")]
     /// <summary>
     /// The transform of the pongball (the ball that bounces over the screen)
     /// </summary>
     public Transform _pongball;
+
     /// <summary>
     /// The transform of the player, this one is located on the right side of the screen
     /// </summary>
     public Transform _player;
+
     /// <summary>
     /// The transform of the enemy, this one is located on the left side of the screen
     /// </summary>
     public Transform _enemy;
+
     /// <summary>
     /// The textmeshprogui component that displays the score
     /// </summary>
@@ -46,35 +88,43 @@ public class Tymon_Main : MonoBehaviour
     /// Reference to the pongball class
     /// </summary>
     private Tymon_Pongball _tymon_pongball;
+
     /// <summary>
     /// Reference to the player class
     /// </summary>
     private Tymon_Player _tymon_player;
+
     /// <summary>
     /// Reference to the enemy class
     /// </summary>
     private Tymon_Enemy _tymon_enemy;
 
-    private void Awake()
+    public void Start()
     {
         INSTANCE = this;
+
+        //Instantiates the powerup class to run the startup to add everything to the dictonary
+        _powerUps = new PowerUpBase();
+        _powerUps.StartUp(_powerUpPrefab, _ballGameObject, _panel);
     }
 
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
+    public void Update()
     {
         // Update the classes via the Update Methode (Not the monobehaivor Update()!)
         _tymon_pongball?.Update();
         _tymon_player?.Update();
         _tymon_enemy?.Update();
+
+        //Updates the powerups
+        _powerUps.UpdateAll();
+        ChangeBackGround();
     }
 
+    private void ChangeBackGround()
+    {
+        float t = Mathf.PingPong(Time.time, _duration) / _duration;
+        Camera.main.backgroundColor = Color.Lerp(_color1, _color2, t);
+    }
     /// <summary>
     /// Updates the score and the ui for the score
     /// </summary>
@@ -86,7 +136,7 @@ public class Tymon_Main : MonoBehaviour
         // Update ui
         INSTANCE._uiScore.text = INSTANCE._score.x.ToString() + " | " + INSTANCE._score.y.ToString();
         // Play particle
-        if(scoreToAdd.x > 0)
+        if (scoreToAdd.x > 0)
         {
             INSTANCE._scoredRightParticle.Play();
         }

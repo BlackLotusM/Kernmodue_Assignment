@@ -11,14 +11,17 @@ public class Tymon_Enemy
     /// The speed at which the enemy can move
     /// </summary>
     protected float _enemySpeed;
+
     /// <summary>
     /// The x-axis the enemy is locked on (cannot move towords other x-axis value)
     /// </summary>
     protected float _xPositionLock;
+
     /// <summary>
     /// Reference to the enemy transform
     /// </summary>
     protected Transform _enemy;
+
     /// <summary>
     /// Reference to the ball transform
     /// </summary>

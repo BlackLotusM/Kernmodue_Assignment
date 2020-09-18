@@ -75,7 +75,7 @@ public class Tymon_Pongball
             _dirX = 1;
             _movementSpeedScaler = 1;
             _movementSpeed = 5f;
-            Tymon_Main.UpdateScore(new Vector2(0, 1));
+            Script_Mono.UpdateScore(new Vector2(0, 1));
         }
         else if(pos.x == 1)
         {
@@ -85,7 +85,7 @@ public class Tymon_Pongball
             _dirX = -1;
             _movementSpeedScaler = 1;
             _movementSpeed = 5f;
-            Tymon_Main.UpdateScore(new Vector2(1, 0));
+            Script_Mono.UpdateScore(new Vector2(1, 0));
         }
         if(pos.y == 0) _dirY = 1; else if(pos.y == 1) _dirY = -1;
         // Set ponball position relative to camea viewport

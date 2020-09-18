@@ -9,6 +9,9 @@ public class PowerUpBase : IRotateable
     private GameObject _prefab;
     private GameObject _ball;
     private GameObject _canvas;
+
+    private PowerUpBase _power1;
+    private PowerUpBase _power2;
     private PowerUp_Flashbang _power3;
     private PowerUp_Small _power4;
 
@@ -30,10 +33,10 @@ public class PowerUpBase : IRotateable
     {
         //takes the screen region to spawn between
         Vector3 screenPosition = Camera.main.ScreenToWorldPoint(new Vector3(Random.Range(300, Screen.width - 100), Random.Range(0, Screen.height), 10));
-        GameObject Spawn = GameObject.Instantiate(obj, screenPosition, Quaternion.identity);
-        Spawn.name = _name;
-        Test2(Spawn);
-        _gameObjectList.Add(Spawn, type);
+        GameObject spawn = GameObject.Instantiate(obj, screenPosition, Quaternion.identity);
+        spawn.name = _name;
+        PowerUpColor(spawn);
+        _gameObjectList.Add(spawn, type);
     }
 
     public void StartUp(GameObject prefab, GameObject ball, GameObject canvas)
@@ -43,8 +46,8 @@ public class PowerUpBase : IRotateable
         this._canvas = canvas;
 
         //makes the constructor run once to add themself to the dictonary
-        PowerUpBase power1 = new PowerUp_Slomo();
-        PowerUpBase power2 = new PowerUp_Speed();
+        _power1 = new PowerUp_Slomo();
+        _power2 = new PowerUp_Speed();
         _power3 = new PowerUp_Flashbang(_canvas);
         _power4 = new PowerUp_Small();
 
@@ -87,39 +90,39 @@ public class PowerUpBase : IRotateable
     }
 
     //rotates the object
-    public virtual void Rotate(GameObject PU)
+    public virtual void Rotate(GameObject powerUp)
     {
-        PU.transform.Rotate(new Vector3(0, 2, 1) * Time.deltaTime * 11f);
+        powerUp.transform.Rotate(new Vector3(0, 2, 1) * Time.deltaTime * 11f);
     }
 
-    public virtual void SpawnIn(GameObject PU)
+    public virtual void SpawnIn(GameObject powerUp)
     {
-        if (PU.transform.localScale.magnitude < 0.1f)
+        if (powerUp.transform.localScale.magnitude < 0.1f)
         {
-            PU.transform.localScale = Vector3.Lerp(PU.transform.localScale, PU.transform.localScale * 2, Time.deltaTime * 5);
+            powerUp.transform.localScale = Vector3.Lerp(powerUp.transform.localScale, powerUp.transform.localScale * 2, Time.deltaTime * 5);
         }
     }
 
     //sets the funtion every power up will need
-    public virtual void Test2(GameObject t) { }
+    public virtual void PowerUpColor(GameObject t) { }
     public virtual void DoAction(GameObject t) { }
 
     //checks difference between the sphere and the gameobject
     //Will remove if its close enough otherwise it calls the rotate function
     //will also call the action
-    public void CheckCol(GameObject player, GameObject powerup)
+    public void CheckCol(GameObject player, GameObject powerUp)
     {
-        if (Vector3.Distance(player.transform.position, powerup.transform.position) < 0.5 + (player.transform.localScale.x / 2))
+        if (Vector3.Distance(player.transform.position, powerUp.transform.position) < 0.5 + (player.transform.localScale.x / 2))
         {
-            _gameObjectList.Remove(powerup);
-            GameObject.Destroy(powerup);
+            _gameObjectList.Remove(powerUp);
+            GameObject.Destroy(powerUp);
             Camera.main.GetComponent<AudioSource>().Play();
             DoAction(player);
         }
         else
         {
-            Rotate(powerup);
-            SpawnIn(powerup);
+            Rotate(powerUp);
+            SpawnIn(powerUp);
         }
     }
 }
