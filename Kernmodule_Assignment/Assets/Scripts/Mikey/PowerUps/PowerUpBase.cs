@@ -4,15 +4,39 @@ using UnityEngine;
 
 public class PowerUpBase : IRotateable
 {
+    /// <summary>
+    /// Name of the powerup
+    /// </summary>
     protected string _name { get; set; }
 
+    /// <summary>
+    /// The default prefab of the powerup
+    /// </summary>
     private GameObject _prefab;
+    /// <summary>
+    /// The GameObject of the ball
+    /// </summary>
     private GameObject _ball;
+    /// <summary>
+    /// The Canvas of the scene
+    /// </summary>
     private GameObject _canvas;
 
+    /// <summary>
+    /// Powerup reference
+    /// </summary>
     private PowerUpBase _power1;
+    /// <summary>
+    /// Powerup reference
+    /// </summary>
     private PowerUpBase _power2;
+    /// <summary>
+    /// Powerup reference
+    /// </summary>
     private PowerUp_Flashbang _power3;
+    /// <summary>
+    /// Powerup reference
+    /// </summary>
     private PowerUp_Small _power4;
 
 
@@ -20,15 +44,23 @@ public class PowerUpBase : IRotateable
     //The second object will store the gameobjects that have been spawned and contain the index of the PowerUp class associated with it
     protected static Dictionary<int, PowerUpBase> _powerUpList = new Dictionary<int, PowerUpBase>();
     protected static Dictionary<GameObject, int> _gameObjectList = new Dictionary<GameObject, int>();
-
+    /// <summary>
+    /// Number of powerups at 1 time
+    /// </summary>
     private int _powerupsatatime = 2;
-
+    /// <summary>
+    /// The value that is used for the powerupbase index (See StartUp())
+    /// </summary>
     private PowerUpBase _value;
 
-    //This instantiates the prefab
-    //Changes the name
-    //calls the change color function
-    //And adds the gameobject to the dictionary
+    /// <summary>
+    /// This instantiates the prefab
+    /// Changes the name
+    /// calls the change color function
+    /// And adds the gameobject to the dictionary
+    /// </summary>
+    /// <param name="obj">Object to spawn</param>
+    /// <param name="type">The type of powerup</param>
     public void Spawn(GameObject obj, int type)
     {
         //takes the screen region to spawn between
@@ -39,6 +71,12 @@ public class PowerUpBase : IRotateable
         _gameObjectList.Add(spawn, type);
     }
 
+    /// <summary>
+    /// Called at the start of the game to setup all values
+    /// </summary>
+    /// <param name="prefab">Prefab of the powerup</param>
+    /// <param name="ball">Gameobject of the ball</param>
+    /// <param name="canvas">Gameobject of the scene canvas</param>
     public void StartUp(GameObject prefab, GameObject ball, GameObject canvas)
     {
         this._ball = ball;
@@ -63,6 +101,9 @@ public class PowerUpBase : IRotateable
         }
     }
 
+    /// <summary>
+    /// Gets called in the main script that contains the monobehaivor to update the powerups behavior
+    /// </summary>
     public void UpdateAll()
     {
         //updates the flashbang stats
@@ -89,12 +130,19 @@ public class PowerUpBase : IRotateable
         }
     }
 
-    //rotates the object
+    /// <summary>
+    /// Rotates the powerup gameobject
+    /// </summary>
+    /// <param name="powerUp"></param>
     public virtual void Rotate(GameObject powerUp)
     {
         powerUp.transform.Rotate(new Vector3(0, 2, 1) * Time.deltaTime * 11f);
     }
 
+    /// <summary>
+    /// Spawns in the gameobject in the scene
+    /// </summary>
+    /// <param name="powerUp"></param>
     public virtual void SpawnIn(GameObject powerUp)
     {
         if (powerUp.transform.localScale.magnitude < 0.1f)
@@ -103,13 +151,24 @@ public class PowerUpBase : IRotateable
         }
     }
 
-    //sets the funtion every power up will need
+    /// <summary>
+    /// Set the color of the powerup
+    /// </summary>
+    /// <param name="t"></param>
     public virtual void PowerUpColor(GameObject t) { }
+    /// <summary>
+    /// The void that contains the functionallity of the powerup
+    /// </summary>
+    /// <param name="t"></param>
     public virtual void DoAction(GameObject t) { }
 
-    //checks difference between the sphere and the gameobject
-    //Will remove if its close enough otherwise it calls the rotate function
-    //will also call the action
+    /// <summary>
+    /// checks difference between the sphere and the gameobject
+    /// Will remove if its close enough otherwise it calls the rotate function
+    /// will also call the action
+    /// </summary>
+    /// <param name="player"></param>
+    /// <param name="powerUp"></param>
     public void CheckCol(GameObject player, GameObject powerUp)
     {
         if (Vector3.Distance(player.transform.position, powerUp.transform.position) < 0.5 + (player.transform.localScale.x / 2))
