@@ -3,9 +3,19 @@ using UnityEngine.Rendering.PostProcessing;
 
 public class PowerUp_Flashbang : PowerUpBase, IRotateable
 {
+    /// <summary>
+    /// Postprocessing vignette
+    /// </summary>
     private Vignette _vin;
+    /// <summary>
+    /// Reference to the canvas of the scene
+    /// </summary>
     private GameObject _canvas;
 
+    /// <summary>
+    /// Set the values of the script
+    /// </summary>
+    /// <param name="flashbangPanel">The Gameobject that connects with the flashbang</param>
     public PowerUp_Flashbang(GameObject flashbangPanel)
     {
         this._canvas = flashbangPanel;
@@ -14,7 +24,10 @@ public class PowerUp_Flashbang : PowerUpBase, IRotateable
         _vin = Camera.main.GetComponent<PostProcessVolume>().profile.GetSetting<Vignette>();
     }
 
-    //the color of the sphere changes, just testing
+    /// <summary>
+    /// When the powerup is activated this gets called
+    /// </summary>
+    /// <param name="ball"></param>
     public override void DoAction(GameObject ball)
     {
         Debug.Log("slomo died");
@@ -24,7 +37,9 @@ public class PowerUp_Flashbang : PowerUpBase, IRotateable
         CheckFlashBang();
     }
 
-    //Updates the flashbang effect
+    /// <summary>
+    /// Updates the flashbang effect
+    /// </summary>
     public void CheckFlashBang()
     {
         //checks camera vignette intensity if its abvove 0 it will go down
@@ -39,12 +54,19 @@ public class PowerUp_Flashbang : PowerUpBase, IRotateable
         }
     }
 
-    //For now this will set the color of the powerup
+    /// <summary>
+    /// Set the color of the powerup
+    /// </summary>
+    /// <param name="obj"></param>
     public override void PowerUpColor(GameObject obj)
     {
         obj.GetComponent<MeshRenderer>().material.color = new Color(1.0f, 255.0f, 1.0f, 0.20f);
     }
 
+    /// <summary>
+    /// Rotate the gameobject
+    /// </summary>
+    /// <param name="powerUp"></param>
     public override void Rotate(GameObject powerUp)
     {
         powerUp.transform.Rotate(new Vector3(2, 0, 8) * Time.deltaTime * 40f);

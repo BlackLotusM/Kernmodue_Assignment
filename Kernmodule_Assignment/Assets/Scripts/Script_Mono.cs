@@ -9,7 +9,6 @@ using UnityEngine;
 
 public class Script_Mono : MonoBehaviour
 {
-
     //Gedeelte van mikey
     [Header("Power Up Components")]
     /// <summary>
@@ -44,7 +43,7 @@ public class Script_Mono : MonoBehaviour
     private PowerUpBase _powerUps;
 
 
-    //Gedeelte tymon
+    //Gedeelte Tymon (Yes we know, the order of public/protected/private is invalid here)
     public static Script_Mono INSTANCE { get; set; }
     [Header("Vars")]
     /// <summary>
@@ -78,10 +77,22 @@ public class Script_Mono : MonoBehaviour
     /// </summary>
     public TextMeshProUGUI _uiScore;
 
+    /// <summary>
+    /// Particle that plays when point scored on left side
+    /// </summary>
     public ParticleSystem _scoredLeftParticle;
+    /// <summary>
+    /// Particle that plays when point scored on right side
+    /// </summary>
     public ParticleSystem _scoredRightParticle;
 
+    /// <summary>
+    /// Button that triggers singleplayer mode
+    /// </summary>
     public GameObject _buttonSingleplayer;
+    /// <summary>
+    /// Button that triggers multiplayer mode
+    /// </summary>
     public GameObject _buttonMultiplayer;
 
     /// <summary>
@@ -120,11 +131,15 @@ public class Script_Mono : MonoBehaviour
         ChangeBackGround();
     }
 
+    /// <summary>
+    /// Change the background color of the camera
+    /// </summary>
     private void ChangeBackGround()
     {
         float t = Mathf.PingPong(Time.time, _duration) / _duration;
         Camera.main.backgroundColor = Color.Lerp(_color1, _color2, t);
     }
+
     /// <summary>
     /// Updates the score and the ui for the score
     /// </summary>
@@ -146,6 +161,9 @@ public class Script_Mono : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// Triggerd when the player presses the singleplayer button, sets the game to singleplayer
+    /// </summary>
     public void ButtonPressedSingleplayer()
     {
         // Disable buttons
@@ -159,6 +177,9 @@ public class Script_Mono : MonoBehaviour
         _tymon_enemy = new Tymon_Enemy(_enemy, _pongball, -7f, 9f);
     }
 
+    /// <summary>
+    /// Triggerd when the player presses the multiplayer button, sets the game to multiplayer
+    /// </summary>
     public void ButtonPressedMultiplayer()
     {
         // Disable buttons

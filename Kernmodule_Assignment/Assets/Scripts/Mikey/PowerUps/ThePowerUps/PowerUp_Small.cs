@@ -4,19 +4,28 @@ using UnityEngine;
 
 public class PowerUp_Small : PowerUpBase, IRotateable
 {
-    //constructor
+    /// <summary>
+    /// The constructor of the class
+    /// </summary>
     public PowerUp_Small()
     {
         _name = "Speed";
         _powerUpList.Add(3, this);
     }
 
-    //changes color of the ball just to test 
+    /// <summary>
+    /// The action of the powerup, in this case change the scale
+    /// </summary>
+    /// <param name="ball"></param>
     public override void DoAction(GameObject ball)
     {
         ball.transform.localScale = new Vector3(0.1f, 0.1f, 0.1f);
     }
 
+    /// <summary>
+    /// Resize the ball to normal scale
+    /// </summary>
+    /// <param name="ball"></param>
     public void ReDoSize(GameObject ball)
     {
         if (ball.transform.localScale.x < 1f)
@@ -25,13 +34,19 @@ public class PowerUp_Small : PowerUpBase, IRotateable
         }
     }
 
-    //Changes color of the power up just to show its working
+    /// <summary>
+    /// Change the powerup color
+    /// </summary>
+    /// <param name="obj">The powerup gameobject</param>
     public override void PowerUpColor(GameObject obj)
     {
         obj.GetComponent<MeshRenderer>().material.color = new Color(255.0f, 221.0f, 1.0f, 0.70f);
     }
 
-    //rotates the speed power up different from the others
+    /// <summary>
+    /// Rotate the powerup
+    /// </summary>
+    /// <param name="powerUp">The powerup gameobject</param>
     public override void Rotate(GameObject powerUp)
     {
         powerUp.transform.Rotate(new Vector3(4, 0, 0) * Time.deltaTime * 20f);
